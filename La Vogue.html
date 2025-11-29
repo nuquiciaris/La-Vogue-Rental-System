@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+    <html lang="en">
+    <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>La Vogue Rentals</title>
+    <style>
+
+    @keyframes fadeOut {
+    from { opacity: 1; }
+    to { opacity: 0; visibility: hidden; }
+}
+     
+    @import url('https://fonts.googleapis.com/css2?family=Pacifico&family=Poppins:wght@400;600&display=swap');
+    *{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:'Poppins',sans-serif;background-color:#f5f5f5;color:#2a2a2a;min-height:100vh;overflow-x:hidden}
+    header{background-color:#9ba4b5;border-bottom:2px solid #9370db;height:60px;padding:0 1rem;display:flex;align-items:center}
+    .logo{font-family:'Pacifico',cursive;font-size:1.7rem;color:white;cursor:pointer;margin-right:auto}
+    nav{display:flex;align-items:center;gap:2rem;color:white}
+    nav ul{list-style:none;display:flex;gap:1.8rem;font-weight:600}
+    nav ul li{cursor:pointer;border-bottom:2px solid transparent;padding-bottom:2px;transition:.3s}
+    nav ul li.active,nav ul li:hover{border-color:#9370db}
+    nav .nav-icons{display:flex;gap:1.5rem;color:white;cursor:pointer;align-items:center}
+    nav .nav-icons svg{width:26px;height:26px;fill:currentColor;transition:.3s}
+    nav .nav-icons svg:hover{fill:#9370db}
+
+    /* Slider */
+    .slider{position:relative;width:100%;max-width:1150px;height:350px;margin:1.5rem auto;overflow:hidden;border-radius:14px;box-shadow:0 4px 12px rgba(0,0,0,0.2)}
+    .slides{display:flex;width:100%;height:100%;transition:transform .8s ease}
+    .slides img{min-width:100%;object-fit:cover;cursor:pointer}
+    .slider-dots{text-align:center;margin-top:10px}
+    .slider-dots span{display:inline-block;width:12px;height:12px;background:#ccc;border-radius:50%;margin:0 5px;cursor:pointer;transition:.3s}
+    .slider-dots span.active{background:#6b21a8}
+
+    /* Filters */
+    .filters{background-color:#7f8fa6;padding:1rem 0;border-bottom:2px solid #9370db}
+    .filter-list{width:90%;max-width:1150px;margin:auto;display:flex;justify-content:center;gap:25px;font-weight:600;color:#dde1e7;text-transform:uppercase}
+    .filter-list button{background:none;border:none;font-size:1rem;color:inherit;cursor:pointer;border-bottom:2px solid transparent;padding-bottom:3px;transition:.3s}
+    .filter-list button.active,.filter-list button:hover{border-color:#9370db;color:#fff}
+
+    /* Subcategories */
+    .subcategories{width:90%;max-width:1150px;margin:10px auto;display:flex;justify-content:center;gap:12px;flex-wrap:wrap}
+    .subcategories button{background:#e0e0e0;border:none;padding:6px 14px;border-radius:20px;cursor:pointer;font-size:.9rem;transition:.3s}
+    .subcategories button.active{background:#9370db;color:white}
+
+    /* Product Grid */
+    .product-grid{width:90%;max-width:1150px;margin:2rem auto 4rem;display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:25px}
+    .product-card{background-color:#eaeaea;border-radius:14px;padding:14px;box-shadow:0 4px 10px rgba(0,0,0,0.1);transition:.25s;cursor:pointer;display:flex;flex-direction:column;justify-content:space-between}
+    .product-card:hover{transform:translateY(-6px);box-shadow:0 8px 20px rgba(0,0,0,0.18)}
+    .product-card img{border-radius:14px;width:100%;height:220px;object-fit:cover;margin-bottom:10px}
+    .product-desc{font-weight:600;font-size:1.06rem;margin-bottom:4px;color:#444}
+    .product-description{font-size:0.9rem;margin-bottom:4px;color:#555}
+    .product-sizes{font-size:0.85rem;margin-bottom:8px;color:#333}
+    .size-selector{margin:5px 0;display:flex;gap:6px;flex-wrap:wrap}
+    .size-selector button{padding:3px 8px;border:1px solid #6b21a8;border-radius:6px;background:#fff;color:#6b21a8;cursor:pointer;transition:.2s}
+    .size-selector button.selected{background:#6b21a8;color:#fff}
+    .price-icons-row{display:flex;justify-content:space-between;align-items:center}
+    .product-price{font-weight:700;font-size:1.1rem;color:#6b21a8}
+    .icons-row{display:flex;gap:12px}
+    .icons-row svg{width:24px;height:24px;fill:#6b21a8;cursor:pointer;transition:.25s}
+    .icons-row svg:hover{fill:#8b5cf6}
+
+    /* Wishlist & Cart Page*/
+    #wishlistPage,#cartPage,#helpPage{display:none;width:90%;max-width:1150px;margin:2rem auto 4rem}
+    #wishlistPage.active,#cartPage.active,#helpPage.active{display:block}
+    #wishlistPage h2,#cartPage h2,#helpPage h2{text-align:center;margin-bottom:1rem;color:#444}
+    #wishlistItems{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:25px;}
+    #cartItems{display:flex;flex-direction:column;gap:15px}
+    .wishlist-card{background:#eaeaea;border-radius:14px;padding:14px;text-align:center}
+    .wishlist-card img{width:100%;height:200px;object-fit:cover;border-radius:14px}
+    .wishlist-card .item-name{font-weight:600;margin-top:8px}
+    .wishlist-card .item-price{color:#6b21a8;font-weight:700}
+    .wishlist-card .remove-btn{display:block;margin:8px auto 0;background:#e63946;color:white;border:none;border-radius:6px;padding:4px 8px;cursor:pointer}
+
+/* Slider container */
+.slider {
+    width: 100%;
+    max-width: 1150px; 
+    height: 350px;     
+    overflow: hidden;
+    position: relative;
+    margin: auto; 
+}
+
+/* Slides container */
+.slides {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    transition: transform 0.5s ease-in-out;
+}
+
+/* image in the slides */
+.slides img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; 
+    flex-shrink: 0;   
+}
+
+/* dots */
+.slider-dots {
+    text-align: center;
+    margin-top: 10px;
+}
+
+.slider-dots span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    background: #ccc;
+    border-radius: 50%;
+    margin: 0 5px;
+    cursor: pointer;
+}
+
+.slider-dots .active {
+    background: #333;
+}
+
+    /* Cart page */
+#cartItems {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    width: 90%;
+    max-width: 900px;
+    margin: 2rem auto 4rem;
+}
+
+.cart-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background: #fff;
+    border-radius: 12px;
+    padding: 15px 20px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.cart-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 25px rgba(0,0,0,0.12);
+}
+
+.cart-card img {
+    width: 130px;
+    height: 130px;
+    border-radius: 12px;
+    object-fit: cover;
+    flex-shrink: 0;
+}
+
+.cart-card-details {
+    flex: 1;
+    margin-left: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.cart-card-details .item-name {
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: #333;
+}
+
+.cart-card-details .item-price {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #6b21a8;
+}
+
+.cart-card-qty {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-top: 6px;
+}
+
+.cart-card-qty button {
+    padding: 6px 10px;
+    border: 1px solid #6b21a8;
+    border-radius: 6px;
+    background: #fff;
+    color: #6b21a8;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.cart-card-qty span {
+    min-width: 24px;
+    text-align: center;
+    font-weight: 600;
+    color: #333;
+}
+
+.remove-btn {
+    background: #e63946;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 12px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: background 0.2s;
+}
+
+.remove-btn:hover {
+    background: #c5303f;
+}
+
+@media (max-width: 600px) {
+    .cart-card {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    .cart-card img {
+        width: 100%;
+        height: auto;
+    }
+    .cart-card-details {
+        margin-left: 0;
+        margin-top: 10px;
+    }
+    .cart-card-qty {
+        margin-top: 12px;
+    }
+}
+
+
+    /* help page design */
+    #helpPage{
+        display:none;
+        width:90%;
+        max-width:1150px;
+        margin:2rem auto 4rem;
+    }
+    #helpPage.active{
+        display:block;
+    }
+    #helpPage h2{
+        text-align:left; 
+        margin-bottom:1.5rem;
+        color:#2a2a2a;
+        font-size: 2rem;
+        border-bottom: 2px solid #9370db;
+        padding-bottom: 10px;
+    }
+    .help-container{
+        display: flex;
+        gap: 30px;
+    }
+    .help-sidebar{
+        flex: 0 0 220px; 
+        background: #fff;
+        border-radius: 12px;
+        padding: 15px;
+        box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+    }
+    .help-sidebar h3{
+        font-size: 1.2rem;
+        color: #444;
+        margin-bottom: 15px;
+    }
+    .help-nav-list{
+        list-style: none;
+        padding: 0;
+    }
+    .help-nav-list li button{
+        display: block;
+        width: 100%;
+        text-align: left;
+        background: none;
+        border: none;
+        padding: 10px 5px;
+        font-size: 1rem;
+        color: #666;
+        cursor: pointer;
+        border-radius: 6px;
+        transition: .2s;
+    }
+    .help-nav-list li button:hover{
+        background: #f0f0f0;
+        color: #6b21a8;
+    }
+    .help-nav-list li button.active{
+        background: #e0e0ff;
+        color: #6b21a8;
+        font-weight: 600;
+    }
+    .help-main-content{
+        flex-grow: 1;
+    }
+
+    .help-content-section{
+        background: white;
+        border-radius: 12px;
+        padding: 20px;
+        box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+        display: none; 
+    }
+    .help-content-section.active{
+        display: block;
+    }
+    .help-content-section h3{
+        color: #6b21a8;
+        margin-bottom: 15px;
+        border-bottom: 1px dashed #ccc;
+        padding-bottom: 5px;
+    }
+
+    /* FAQ */
+    .faq-list{margin-top:12px}
+    .faq-item{border-bottom:1px solid #eee;padding:12px 0}
+    .faq-q{display:flex;justify-content:space-between;cursor:pointer;font-weight:700}
+    .faq-a{margin-top:8px;display:none;color:#555;line-height:1.45}
+
+    /* Contact form */
+    .contact-form{margin-top:14px;display:grid;gap:10px}
+    .contact-form input,.contact-form textarea{padding:10px;border-radius:8px;border:1px solid #ccc;width:100%;font-family:inherit}
+    .contact-form button{padding:12px;border-radius:8px;border:none;background:#6b21a8;color:white;cursor:pointer;font-weight:700}
+
+    /* Quick contact buttons */
+    .help-actions{display:none;}
+    .contact-btn{display:none;}
+
+    @media (max-width: 768px) {
+        .help-container {
+            flex-direction: column;
+        }
+        .help-sidebar {
+            flex: auto;
+            margin-bottom: 20px;
+        }
+        .help-nav-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+        .help-nav-list li {
+            flex: 1 1 auto; 
+        }
+        .help-nav-list li button {
+            text-align: center;
+            padding: 8px 10px;
+        }
+    }
+
+    /* Modal */
+    #productModal{display:none;position:fixed;z-index:999;inset:0;background:rgba(0,0,0,.5);justify-content:center;align-items:center}
+    #productModal.active{display:flex}
+    .modal-content{background:#fff;border-radius:14px;padding:20px;width:90%;max-width:450px;box-shadow:0 8px 25px rgba(0,0,0,.3);animation:pop .3s ease}
+    @keyframes pop{from{transform:scale(.8);opacity:0}to{transform:scale(1);opacity:1}}
+    .modal-content img{width:100%;border-radius:14px;margin-bottom:10px}
+    .modal-description{margin-bottom:6px;color:#555}
+    .modal-sizes{display:flex;gap:6px;margin-bottom:12px;flex-wrap:wrap}
+    .modal-sizes button{padding:3px 8px;border:1px solid #6b21a8;border-radius:6px;background:#fff;color:#6b21a8;cursor:pointer;transition:.2s}
+    .modal-sizes button.selected{background:#6b21a8;color:#fff}
+    .close-modal, #modalAddToCart{background:#6b21a8;color:white;border:none;padding:8px 15px;border-radius:8px;font-weight:600;cursor:pointer;width:100%;margin-bottom:10px}
+
+    /* Account Settings */
+    #accountSettingsPage{display:none;width:90%;max-width:1150px;margin:2rem auto 4rem}
+    .account-layout{display:flex;gap:25px}
+    .account-sidebar{flex:0 0 220px;background:#8f98a8;border-radius:12px;padding:24px;color:white;box-shadow:0 4px 10px rgba(0,0,0,0.06)}
+    .account-sidebar h2{font-size:2rem;margin-bottom:18px;color:#3b3b3b;text-align:center}
+    .account-sidebar ul{list-style:none;padding:0;margin-top:6px}
+    .account-sidebar li{margin:12px 0}
+    .acct-btn{display:block;background:transparent;border:none;color:#e9eef5;padding:10px 14px;text-align:left;width:100%;border-radius:8px;cursor:pointer;font-weight:500}
+    .acct-btn:hover{background:rgba(255,255,255,0.06)}
+    .active-acct-btn{background:#dfe6f5;border-radius:8px;color:#3b3b3b;font-weight:700}
+
+    /* Main account */
+    .account-main{flex:1}
+    .profile-top{display:flex;gap:20px;align-items:flex-start}
+    .profile-card{flex:1;background:white;border-radius:12px;padding:22px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .member-card{width:220px;height:180px;background:#8f98a8;border-radius:10px;padding:18px;color:white;display:flex;flex-direction:column;justify-content:center;align-items:center;box-shadow:0 6px 16px rgba(0,0,0,0.05)}
+    .member-card h3{margin:6px 0;font-size:1.15rem;letter-spacing:0.6px}
+    .member-card .small{opacity:0.9;font-size:0.9rem}
+    .profile-title{text-align:center;font-size:1.8rem;margin-bottom:12px;color:#333}
+    .profile-fields p{margin-bottom:12px;font-weight:600}
+    .profile-fields p span{font-weight:400;color:#444;display:block;margin-top:6px}
+
+    .edit-section{margin-top:18px;background:white;border-radius:12px;padding:20px;box-shadow:0 6px 18px rgba(0,0,0,0.06)}
+    .edit-section h3{color:#6b21a8;margin-bottom:12px}
+    .form-row{margin-bottom:14px}
+    .form-row label{display:block;margin-bottom:8px;font-weight:700}
+    .form-row input,.form-row select{width:100%;padding:12px;border-radius:8px;border:1px solid #ddd;font-family:inherit}
+    .save-btn{background:#6b21a8;color:white;padding:12px;border:none;border-radius:8px;width:100%;font-weight:700;cursor:pointer;margin-top:6px}
+
+    @media (max-width:1000px){
+        .profile-top{flex-direction:column}
+        .member-card{width:100%;height:auto}
+        .account-layout{flex-direction:column}
+    }
+    footer{background-color:#9ba4b5;padding:.6rem 1rem;font-weight:600;font-size:.9rem;color:#222;text-align:center;margin-top:30px}
+    </style>
+    </head>
+    <body>
+
+<div id="loginOverlay" style="
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    display: flex;
+    background: #8d9cb8;
+    font-family: 'Poppins', sans-serif;
+">
+
+    <div style="
+        width: 50%;
+        background: url('https://i.pinimg.com/1200x/6e/07/7b/6e077b78c0f6dc1c75a2f3acdad028d8.jpg');
+        background-size: cover;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding-left: 70px;
+        color: white;
+        position: relative;
+    ">
+        <div style="font-family: 'Brush Script MT', cursive; font-size: 46px; margin-bottom: 20px;">
+            La Vogue Rentals
+        </div>
+
+        <div style="font-size: 55px; font-weight: 800; max-width: 400px; line-height: 1.1;">
+            Step into Style,<br> Rent Your Look.
+        </div>
+    </div>
+
+    <div style="
+        width: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #f4f6fb;
+    ">
+        <div style="
+            background: white;
+            padding: 50px;
+            width: 380px;
+            border-radius: 20px;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            animation: fadeIn 0.6s ease;
+        ">
+            <h2 style="
+                font-family: 'Brush Script MT', cursive;
+                font-size: 40px;
+                text-align: center;
+                margin-bottom: 30px;
+                color: #7F8CAA;
+            ">
+                Welcome Back
+            </h2>
+            <!-- REGISTER FORM (Hidden at first) -->
+<div id="registerForm" style="
+    display:none;
+    background: white;
+    padding: 50px;
+    width: 380px;
+    border-radius: 20px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+    animation: fadeIn 0.6s ease;
+">
+
+    <h2 style="
+        font-family: 'Brush Script MT', cursive;
+        font-size: 40px;
+        text-align: center;
+        margin-bottom: 30px;
+        color: #7F8CAA;
+    ">Create Account</h2>
+
+    <label>Name</label>
+    <input type="text" id="regName" placeholder="Full Name" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+
+    <label>Email</label>
+    <input type="email" id="regEmail" placeholder="Enter email" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+
+    <label>Password</label>
+    <input type="password" id="regPass" placeholder="Create password" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+
+    <label>Confirm Password</label>
+    <input type="password" id="regConfirm" placeholder="Confirm password" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+
+    <label>Gender</label>
+    <select id="regGender" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+        <option>Female</option>
+        <option>Male</option>
+        <option>Other</option>
+    </select>
+
+    <label>Birthday</label>
+    <input type="date" id="regBday" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
+
+    <button id="registerBtn" style="
+        width:100%;
+        padding:15px;
+        border-radius:30px;
+        border:none;
+        font-size:18px;
+        background:#7F8CAA;
+        color:white;
+        cursor:pointer;
+        margin-top:10px;
+    ">CREATE ACCOUNT</button>
+
+    <button id="cancelRegister" style="
+        margin-top:15px;
+        width:100%;
+        padding:12px;
+        background:#bbb;
+        border:none;
+        border-radius:10px;
+        cursor:pointer;
+        font-weight:600;
+    ">Back to Login</button>
+
+</div>
+
+
+            <label style="font-size: 16px; font-weight: 600; color: #333;">Email</label>
+            <input type="text" id="loginEmail" placeholder="Enter your email" style="
+                width: 100%;
+                padding: 14px;
+                margin: 10px 0 25px;
+                border: 2px solid #7F8CAA;
+                border-radius: 10px;
+                font-size: 16px;
+            ">
+
+            <label style="font-size: 16px; font-weight: 600; color: #333;">Password</label>
+            <input type="password" id="loginPass" placeholder="Enter your password" style="
+                width: 100%;
+                padding: 14px;
+                margin: 10px 0 25px;
+                border: 2px solid #7F8CAA;
+                border-radius: 10px;
+                font-size: 16px;
+            ">
+
+            <button id="loginBtn" style="
+                width: 100%;
+                padding: 15px;
+                border-radius: 30px;
+                border: none;
+                font-size: 18px;
+                background: #7F8CAA;
+                color: white;
+                cursor: pointer;
+                transition: 0.3s;
+            ">LOG IN</button>
+
+            <div style="
+                margin-top: 20px;
+                display: flex;
+                justify-content: space-between;
+                font-size: 15px;
+            ">
+                <a href="#" style="text-decoration: none; font-weight: 600; color: #0d1e6a;">Forgot Password?</a>
+                <a href="#" style="text-decoration: none; font-weight: 600; color: #0d1e6a;">Create Account</a>
+            </div>
+
+        </div>
+    </div>
+
+</div>
+
+    <header>
+    <div class="logo" id="logoBtn">La Vogue Rentals</div>
+    <nav>
+    <ul>
+    <li id="navHome" class="active">Home</li>
+    <li id="navHelp">Help</li>
+    </ul>
+    <div class="nav-icons">
+    <svg id="wishlistIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09C13.09 4.01 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+    <svg id="cartIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2h2l3.6 7.59-1.35 2.44C4.52 12.37 5.48 14 7 14h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 11h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49-1.96-.63L16.89 9H7.21L6.27 7H1z"/></svg>
+    <svg id="profileIcon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 12c2.67 0 8 1.34 8 4v4H4v-4c0-2.66 5.33-4 8-4zm0-2c-1.66 0-3-1.34-3-3s1.34-3 3-3 3 1.34 3 3-1.34 3-3 3z"/></svg>
+    </div>
+    </nav>
+    </header>
+
+    <div class="slider">
+    <div class="slides">
+    <img src="https://i.pinimg.com/1200x/1d/26/4c/1d264c988391a6b743cfbd299b381170.jpg" alt="slide1">
+    <img src="https://i.pinimg.com/1200x/53/29/63/53296318765b637b8ccd9b50082a4b07.jpg" alt="slide2">
+    <img src="https://i.pinimg.com/1200x/70/d3/34/70d334f9fbc90ab2a185637bf2296c24.jpg" alt="slide3">
+    </div>
+    </div>
+    <div class="slider-dots"></div>
+
+    <section class="filters">
+    <div class="filter-list">
+    <button data-filter="all" class="active">All</button>
+    <button data-filter="female">Female</button>
+    <button data-filter="male">Male</button>
+    <button data-filter="kids">Kids</button>
+    </div>
+    <div class="search-bar" style="text-align:center;margin:20px 0;">
+    <input type="text" id="searchInput" placeholder="Search products..." style="padding:8px 12px;width:250px;border-radius:20px;border:1px solid #ccc;">
+    <button id="searchBtn" style="padding:8px 15px;border:none;border-radius:20px;background:#9370db;color:white;cursor:pointer;">Search</button>
+    </div>
+    <div class="subcategories"></div>
+    </section>
+
+    <section class="product-grid"></section>
+    <section id="wishlistPage"><h2>My Wishlist</h2><div id="wishlistItems"></div></section>
+    <section id="cartPage"><h2>My Cart</h2><div id="cartItems"></div></section>
+
+    <!-- CHECKOUT SECTION -->
+<div id="checkoutSummary" style="
+    margin-top: 20px;
+    background: #fff;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 6px 18px rgba(0,0,0,0.08);
+    max-width: 900px;
+    margin-left: auto;
+    margin-right: auto;
+    display:none;
+">
+    <h3 style="margin-bottom: 15px; color:#6b21a8">Checkout Summary</h3>
+
+    <div style="margin-bottom:12px;">
+        <strong>Subtotal:</strong> <span id="checkoutSubtotal">₱0</span>
+    </div>
+
+    <div style="margin-bottom:12px;">
+        <strong>Delivery Method:</strong><br>
+        <select id="deliveryOption" style="margin-top:6px; padding:8px; width:100%; border-radius:8px; border:1px solid #ccc;">
+            <option value="pickup">Store Pickup (₱0)</option>
+            <option value="delivery">Home Delivery (₱50)</option>
+        </select>
+    </div>
+
+    <div style="margin-bottom:12px;">
+        <strong>Payment Method:</strong><br>
+        <select id="paymentOption" style="margin-top:6px; padding:8px; width:100%; border-radius:8px; border:1px solid #ccc;">
+            <option value="cod">Cash on Delivery</option>
+            <option value="card">Credit/Debit Card</option>
+            <option value="ewallet">E-Wallet</option>
+        </select>
+    </div>
+
+    <div style="margin-bottom:12px;">
+    <strong>Voucher Code:</strong>
+    <div style="display:flex; gap:10px; margin-top:6px;">
+        <input id="voucherInput" type="text" placeholder="Enter voucher code"
+            style="flex:1; padding:8px; border-radius:8px; border:1px solid #ccc;">
+        <button id="applyVoucherBtn"
+            style="padding:8px 15px; background:#6b21a8; color:white; border:none;
+            border-radius:8px; font-weight:700; cursor:pointer;">
+            Apply
+        </button>
+    </div>
+    <p id="voucherMessage" style="margin-top:8px; font-size:0.9rem; color:#6b21a8;"></p>
+</div>
+
+
+    <div style="margin:15px 0; font-size:1.1rem; font-weight:600;">
+        Total: <span id="checkoutTotal" style="color:#6b21a8">₱0</span>
+    </div>
+
+    <button id="checkoutBtn" style="
+        width:100%; padding:12px; background:#6b21a8; color:#fff;
+        border:none; border-radius:8px; font-weight:700; cursor:pointer;
+    ">Proceed to Checkout</button>
+</div>
+
+
+    <section id="helpPage">
+    <h2>Help Center</h2>
+    <div class="help-container">
+        <div class="help-sidebar">
+            <h3>Need Assistance?</h3>
+            <ul class="help-nav-list">
+                <li><button data-target="contact" class="active">Send a Message</button></li>
+                <li><button data-target="faq">Frequently Asked Questions (FAQ)</button></li>
+                <li><button data-target="guides">Rental Guides & Policy</button></li>
+            </ul>
+        </div>
+        <div class="help-main-content">
+
+            <div id="contactContent" class="help-content-section active">
+                <h3>Send us a message</h3>
+                <p style="margin-bottom: 12px; color:#555">Please use the form below for all inquiries. We aim to respond within 24 hours.</p>
+                <div class="help-actions">
+                    </div>
+                
+                <form id="contactForm" class="contact-form" onsubmit="return handleContactForm(event)">
+                    <input type="text" id="cfName" placeholder="Your name" required>
+                    <input type="email" id="cfEmail" placeholder="Your email" required>
+                    <input type="text" id="cfSubject" placeholder="Subject" required>
+                    <textarea id="cfMessage" rows="5" placeholder="Message" required></textarea>
+                    <button type="submit">Send Message</button>
+                </form>
+            </div>
+
+            <div id="faqContent" class="help-content-section">
+    <h3>Rental FAQs</h3>
+
+    <div class="faq-list">
+
+        <div class="faq-item">
+            <div class="faq-q">How do I rent an item? <span>+</span></div>
+            <div class="faq-a">To rent an item, simply browse our collection, select your preferred item, choose a rental date, and proceed to checkout.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">What payment methods do you accept? <span>+</span></div>
+            <div class="faq-a">We accept major credit cards, debit cards, and secure online payment options.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">How do I return an item? <span>+</span></div>
+            <div class="faq-a">Items should be returned to the designated drop-off location by the end of your rental period. Late fees may apply for overdue returns.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">What happens if the item is damaged? <span>+</span></div>
+            <div class="faq-a">If an item is damaged, please contact support immediately. Repair or replacement fees may apply depending on the situation.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">Can I cancel my booking? <span>+</span></div>
+            <div class="faq-a">Yes, bookings can be canceled up to 48 hours before the scheduled rental date. Cancellation fees may apply depending on the situation.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">What if the size does not fit? <span>+</span></div>
+            <div class="faq-a">If the item does not fit, please contact us immediately. We will try to arrange an exchange depending on availability.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">How early should I book an item? <span>+</span></div>
+            <div class="faq-a">We recommend booking 1–2 weeks in advance, especially during peak seasons or popular event dates.</div>
+        </div>
+
+        <div class="faq-item">
+            <div class="faq-q">Do you accept rush rentals? <span>+</span></div>
+            <div class="faq-a">Yes, rush rentals are available depending on item availability. Additional fees may apply.</div>
+        </div>
+
+    </div>
+</div>
+
+
+            <div id="guidesContent" class="help-content-section">
+                <h3>Rental Policy and Guides</h3>
+                <p style="color:#555">This section contains detailed guides on our rental process, cleaning policies, and terms & conditions. Please check back later for updates!</p>
+                <ul style="list-style:disc; margin-left:20px; margin-top:15px; color:#555">
+                    <li><a href="#" style="color:#6b21a8; text-decoration:none;">Full Terms & Conditions</a></li>
+                    <li><a href="#" style="color:#6b21a8; text-decoration:none;">Cleaning and Return Guide</a></li>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+    </section>
+
+    <!-- ACCOUNT SETTINGS PAGE -->
+    <section id="accountSettingsPage">
+        <div class="account-layout">
+            <aside class="account-sidebar">
+                <h2>Account<br>Setting</h2>
+                <ul>
+                    <li><button class="acct-btn active-acct-btn" data-tab="acctProfile" onclick="openAccountTab('acctProfile')">Edit Profile</button></li>
+                    <li><button class="acct-btn" data-tab="acctPassword" onclick="openAccountTab('acctPassword')">Change Password</button></li>
+                    <li><button class="acct-btn" data-tab="acctOrders" onclick="openAccountTab('acctOrders')">Order history</button></li>
+                    <li><button class="acct-btn" data-tab="acctAddress" onclick="openAccountTab('acctAddress')">Address Book</button></li>
+                    <li><button class="acct-btn" data-tab="acctPrivacy" onclick="openAccountTab('acctPrivacy')">Privacy & Notifications</button></li>
+                    <li><button class="acct-btn" data-tab="acctPayment" onclick="openAccountTab('acctPayment')">Payment Methods</button></li>
+                    <li><button class="acct-btn" data-tab="acctCoupons" onclick="openAccountTab('acctCoupons')">Coupons & Rewards</button></li>
+                    <li><button class="acct-btn" data-tab="acctMembership" onclick="openAccountTab('acctMembership')">Membership</button></li>
+                </ul>
+            </aside>
+
+            <div class="account-main">
+                <div class="profile-top">
+                    <div class="profile-card">
+                        <div class="profile-title">PROFILE</div>
+                        <div class="profile-fields">
+                            <p>Email: <span id="display-email">user@example.com</span></p>
+                            <p>Name: <span id="display-name">Juan Dela Cruz</span></p>
+                            <p>Gender: <span id="display-gender">Female</span></p>
+                            <p>Birthday: <span id="display-bday">MM/DD/YYYY</span></p>
+                        </div>
+                    </div>
+
+                    <div class="member-card">
+                        <div style="text-align:center">
+                            <div style="font-family:'Pacifico',cursive;opacity:0.9">La Vogue</div>
+                            <h3 id="card-name">JUAN DELA CRUZ</h3>
+                            <div class="small">GOLD MEMBER</div>
+                            <div class="small">Member Since 2025</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="edit-section" style="margin-top:18px;">
+                    <div id="acctProfile" class="acct-content" style="display:block">
+                        <h3 style="color:#6b21a8">Edit Profile Details</h3>
+                        <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px">
+                            <div class="form-row">
+                                <label>Name:</label>
+                                <input id="edit-name" type="text" value="Juan Dela Cruz">
+                            </div>
+                            <div class="form-row">
+                                <label>Email:</label>
+                                <input id="edit-email" type="email" value="user@example.com">
+                            </div>
+                            <div class="form-row">
+                                <label>Gender:</label>
+                                <select id="edit-gender">
+                                    <option>Female</option>
+                                    <option>Male</option>
+                                    <option>Other</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Birthday:</label>
+                                <input id="edit-bday" type="date">
+                            </div>
+                            <button class="save-btn" onclick="saveProfile()">Save Changes</button>
+                        </div>
+                    </div>
+
+                    <!-- Change Password  -->
+                    <div id="acctPassword" class="acct-content" style="display:none">
+                        <h3 style="color:#6b21a8">Change Password</h3>
+                        <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px">
+                            <div class="form-row"><label>Current Password</label><input type="password" id="cur-pass"></div>
+                            <div class="form-row"><label>New Password</label><input type="password" id="new-pass"></div>
+                            <div class="form-row"><label>Confirm New Password</label><input type="password" id="confirm-pass"></div>
+                            <button class="save-btn" onclick="changePassword()">Update Password</button>
+                        </div>
+                    </div>
+
+                    <!-- Order history -->
+                    <div id="acctOrders" class="acct-content" style="display:none">
+                        <h3 style="color:#6b21a8">Order History</h3>
+                        <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px;color:#555">
+                            <p>No orders yet.</p>
+                        </div>
+                    </div>
+
+                            <!-- Address Book -->
+        <div id="acctAddress" class="acct-content" style="display:none">
+            <h3 style="color:#6b21a8">Address Book</h3>
+            <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px;color:#555">
+
+                <!-- Address Form -->
+                <div id="addressForm">
+                    <div class="form-row">
+                        <label>Label (Home, Office, etc.)</label>
+                        <input id="addr-label" type="text" placeholder="Home">
+                    </div>
+                    <div class="form-row">
+                        <label>Street</label>
+                        <input id="addr-street" type="text" placeholder="Street Name">
+                    </div>
+                    <div class="form-row">
+                        <label>City</label>
+                        <input id="addr-city" type="text" placeholder="City">
+                    </div>
+                    <div class="form-row">
+                        <label>Province</label>
+                        <input id="addr-province" type="text" placeholder="Province">
+                    </div>
+                    <div class="form-row">
+                        <label>ZIP Code</label>
+                        <input id="addr-zip" type="text" placeholder="0000">
+                    </div>
+                    <div class="form-row">
+                        <label>Phone</label>
+                        <input id="addr-phone" type="text" placeholder="09XXXXXXXXX">
+                    </div>
+
+                    <input type="hidden" id="addr-edit-index" value="-1">
+
+                    <div style="display:flex;gap:10px;margin-top:10px;">
+                        <button class="save-btn" style="width:auto" onclick="saveAddress()">Save Address</button>
+                        <button class="save-btn" style="width:auto;background:#e63946" onclick="resetAddressForm()">Cancel</button>
+                    </div>
+                </div>
+
+                <!-- Address list -->
+                <div id="addressList" style="margin-top:20px;"></div>
+
+            </div>
+        </div>
+
+                    <!-- Privacy & Notifications -->
+                    <div id="acctPrivacy" class="acct-content" style="display:none">
+                    <h3 style="color:#6b21a8">Privacy & Notifications</h3>
+                    <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px;color:#555">
+                    <p>Manage your privacy preferences and notification settings below.</p>
+
+
+                    <div class="form-row">
+                    <label>Email Notifications</label>
+                    <select id="notif-email">
+                    <option value="all">Receive all notifications</option>
+                    <option value="important">Only important updates</option>
+                    <option value="none">No email notifications</option>
+                    </select>
+                    </div>
+
+
+                    <div class="form-row">
+                    <label>SMS Notifications</label>
+                    <select id="notif-sms">
+                    <option value="all">Receive all SMS</option>
+                    <option value="important">Only important alerts</option>
+                    <option value="none">Disable SMS notifications</option>
+                    </select>
+                    </div>
+
+
+                    <div class="form-row">
+                    <label>Profile Visibility</label>
+                    <select id="privacy-visibility">
+                    <option value="public">Public</option>
+                    <option value="friends">Friends Only</option>
+                    <option value="private">Private</option>
+                    </select>
+                    </div>
+
+
+                    <button class="save-btn" onclick="savePrivacySettings()">Save Settings</button>
+                    </div>
+                    </div>
+
+                    <!-- Payment Methods -->
+                    <div id="acctPayment" class="acct-content" style="display:none">
+                    <h3 style="color:#6b21a8">Payment Methods</h3>
+
+                    <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:18px;">
+
+                        <!-- CURRENT SAVED PAYMENT METHODS -->
+                        <div id="savedPayments" style="margin-bottom:20px; color:#444;">
+                            <p style="font-weight:600; margin-bottom:10px;">Saved Payment Methods:</p>
+                            <div id="paymentList">
+                            </div>
+                        </div>
+
+                        <hr style="margin:20px 0; opacity:0.5;">
+
+                        <!-- ADD NEW PAYMENT -->
+                        <p style="font-weight:600; margin-bottom:10px;">Add New Payment Method</p>
+
+                        <div class="form-row">
+                            <label>Select Type:</label>
+                            <select id="payType">
+                                <option value="card">Credit / Debit Card</option>
+                                <option value="ewallet">E-Wallet</option>
+                            </select>
+                        </div>
+
+                        <!-- CARD FORM -->
+                        <div id="cardForm">
+                            <div class="form-row">
+                                <label>Cardholder Name</label>
+                                <input type="text" id="cardName" placeholder="e.g., Juan Dela Cruz">
+                            </div>
+                            <div class="form-row">
+                                <label>Card Number</label>
+                                <input type="text" id="cardNumber" maxlength="16" placeholder="xxxx xxxx xxxx xxxx">
+                            </div>
+                            <div class="form-row">
+                                <label>Expiration Date</label>
+                                <input type="month" id="cardExpiry">
+                            </div>
+                            <div class="form-row">
+                                <label>CVV</label>
+                                <input type="password" id="cardCVV" maxlength="4">
+                            </div>
+                        </div>
+
+                        <!-- EWALLET FORM -->
+                        <div id="ewalletForm" style="display:none">
+                            <div class="form-row">
+                                <label>Wallet Type</label>
+                                <select id="walletType">
+                                    <option value="GCash">GCash</option>
+                                    <option value="Maya">Maya</option>
+                                    <option value="PayPal">PayPal</option>
+                                    <option value="GrabPay">GrabPay</option>
+                                </select>
+                            </div>
+                            <div class="form-row">
+                                <label>Account Name</label>
+                                <input type="text" id="walletName" placeholder="Registered full name">
+                            </div>
+                            <div class="form-row">
+                                <label>Wallet Number / Email</label>
+                                <input type="text" id="walletNumber" placeholder="e.g., 09xxxxxxxxx or email">
+                            </div>
+                        </div>
+
+                        <button class="save-btn" onclick="addPaymentMethod()">Save Payment Method</button>
+                    </div>
+                </div>
+
+                    <!-- Coupons & Rewards -->
+                    <div id="acctCoupons" class="acct-content" style="display:none">
+                    <h3 style="color:#6b21a8">Coupons & Rewards</h3>
+
+
+                    <div style="border-top:1px dotted #ddd; margin-top:12px; padding-top:18px; color:#555">
+
+
+                    <!-- Rewards Balance -->
+                    <div style="margin-bottom:25px; background:#f4f4fc; padding:15px; border-radius:10px;">
+                    <h4 style="color:#6b21a8; margin-bottom:8px;">Your Reward Points</h4>
+                    <p style="font-size:1.1rem; font-weight:700; color:#333;">Points: <span id="rewardPoints">250</span></p>
+                    <p style="font-size:0.9rem; color:#666;">Earn more points by renting items and completing purchases.</p>
+                    </div>
+
+
+                    <!-- Apply Coupon -->
+                    <div style="margin-bottom:25px; background:white; padding:15px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                    <h4 style="color:#6b21a8; margin-bottom:8px;">Apply Coupon</h4>
+                    <div style="display:flex; gap:10px;">
+                    <input id="couponInput" type="text" placeholder="Enter coupon code" style="flex:1; padding:10px; border-radius:8px; border:1px solid #ccc;">
+                    <button onclick="applyCoupon()" style="padding:10px 18px; background:#6b21a8; color:white; border:none; border-radius:8px; cursor:pointer; font-weight:700;">Apply</button>
+                    </div>
+                    <p id="couponMessage" style="margin-top:10px; font-size:0.9rem;"></p>
+                    </div>
+
+
+                    <!-- Available Coupons List -->
+                    <div style="background:white; padding:15px; border-radius:10px; box-shadow:0 4px 10px rgba(0,0,0,0.05);">
+                    <h4 style="color:#6b21a8; margin-bottom:10px;">Available Coupons</h4>
+
+
+                    <div id="couponList">
+                    <div style="padding:10px; background:#f4f4fc; border-radius:8px; margin-bottom:10px;">
+                    <strong>NEWUSER20</strong> — 20% OFF for first-time renters
+                    </div>
+                    <div style="padding:10px; background:#f4f4fc; border-radius:8px; margin-bottom:10px;">
+                    <strong>RENT150</strong> — ₱150 OFF minimum spend of ₱800
+                    </div>
+                    <div style="padding:10px; background:#f4f4fc; border-radius:8px; margin-bottom:10px;">
+                    <strong>GLAM10</strong> — Extra 10% OFF on dresses
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+                    </div>
+
+                    <!-- Membership -->
+                    <div id="acctMembership" class="acct-content" style="display:none">
+                    <h3 style="color:#6b21a8">Membership Status</h3>
+
+                    <div style="border-top:1px dotted #ddd;margin-top:12px;padding-top:20px;color:#555">
+
+                        <!-- Current Tier -->
+                        <p style="font-size:1.1rem;font-weight:600;">
+                            Current Tier: <span id="memberTier" style="color:#6b21a8">Gold</span>
+                        </p>
+
+                        <!-- Points & Progress -->
+                        <div style="margin-top:15px;">
+                            <p style="font-weight:600;">Reward Points: 
+                                <span id="memberPoints" style="color:#6b21a8">2400</span>
+                            </p>
+                            <p style="margin-top:4px;">Next Tier: <span id="nextTier">Platinum</span></p>
+
+                            <div style="background:#eee;width:100%;height:14px;border-radius:20px;margin-top:8px;">
+                                <div id="progressBar" style="background:#6b21a8;height:14px;width:70%;border-radius:20px;"></div>
+                            </div>
+                            <p id="pointsNeeded" style="font-size:0.85rem;margin-top:6px;color:#555;">600 points to reach Platinum</p>
+                        </div>
+
+                        <!-- Renewal Info -->
+                        <div style="margin-top:25px;">
+                            <p style="font-weight:600;">Membership Renewal:</p>
+                            <p>Renews on: <span id="renewDate" style="color:#6b21a8">12/01/2025</span></p>
+                            <p style="font-size:0.85rem;margin-top:4px;">Reminder will be sent 7 days before renewal.</p>
+                        </div>
+
+                        <!-- Benefits -->
+                        <div style="margin-top:25px;">
+                            <p style="font-weight:600;">Member Benefits:</p>
+                            <ul style="margin-left:18px;margin-top:6px;line-height:1.5;">
+                                <li>Free rental insurance (damage & cleaning)</li>
+                                <li>10% discount automatically applied at checkout</li>
+                                <li>Priority booking for new items</li>
+                                <li>Exclusive member-only coupons</li>
+                                <li>Earn 1.5x reward points for every purchase</li>
+                            </ul>
+                        </div>
+
+                    </div>
+                </div>
+
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- CHECKOUT CONFIRMATION MODAL -->
+<div id="checkoutModal" style="
+    display:none; position:fixed; inset:0; background:rgba(0,0,0,0.5);
+    z-index:999; justify-content:center; align-items:center;
+">
+    <div style="
+        background:white; padding:25px; border-radius:12px;
+        width:90%; max-width:400px; text-align:center;
+    ">
+        <h3 style="color:#6b21a8; margin-bottom:15px;">Confirm Checkout</h3>
+        <p id="checkoutSummaryText" style="margin-bottom:20px; color:#444;"></p>
+
+        <button id="confirmCheckout" style="
+            padding:10px 20px; background:#6b21a8; color:white;
+            border:none; border-radius:8px; cursor:pointer; width:100%; margin-bottom:10px;
+        ">Confirm</button>
+
+        <button id="cancelCheckout" style="
+            padding:10px 20px; border:none; border-radius:8px; cursor:pointer;
+            width:100%; background:#ccc;
+        ">Cancel</button>
+    </div>
+</div>
+
+
+    <div id="productModal">
+    <div class="modal-content">
+    <img id="modalImg" alt="product image">
+    <h3 id="modalName"></h3>
+    <p id="modalPrice"></p>
+    <div class="modal-description" id="modalDescription"></div>
+    <div class="modal-sizes" id="modalSizes"></div>
+    <label>Quantity:</label>
+    <div style="margin-bottom:12px;display:flex;gap:10px;align-items:center;">
+    <button id="minusBtn" style="padding:6px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer">-</button>
+    <span id="qtyCount">1</span>
+    <button id="plusBtn" style="padding:6px 10px;border-radius:8px;border:1px solid #ccc;background:#fff;cursor:pointer">+</button>
+    </div>
+    <button id="modalAddToCart">Add to Cart</button>
+    <button class="close-modal">Close</button>
+    </div>
+    </div>
+
+    <footer>© 2025 La Vogue Rentals | Fashion that feels good</footer>
+    
+
+    <script>
+    const productGrid=document.querySelector(".product-grid");
+    const wishlistItemsContainer=document.getElementById("wishlistItems");
+    const cartItemsContainer=document.getElementById("cartItems");
+    const subcatContainer=document.querySelector(".subcategories");
+    const searchInput=document.getElementById("searchInput");
+    const searchBtn=document.getElementById("searchBtn");
+
+    const wishlistPage=document.getElementById("wishlistPage");
+    const cartPage=document.getElementById("cartPage");
+    const helpPage=document.getElementById("helpPage");
+    const sliderElem=document.querySelector(".slider");
+    const filtersElem=document.querySelector(".filters");
+    const dotsContainer=document.querySelector(".slider-dots");
+
+    const accountSettingsPage = document.getElementById("accountSettingsPage");
+
+    let wishlist=[], cart=[];
+    let orderHistory = [];
+    let currentCategory='all', currentSub=null, currentSearch="";
+
+    // Modal elements
+    const modal=document.getElementById("productModal");
+    const modalImg=document.getElementById("modalImg");
+    const modalName=document.getElementById("modalName");
+    const modalPrice=document.getElementById("modalPrice");
+    const modalDescription=document.getElementById("modalDescription");
+    const modalSizes=document.getElementById("modalSizes");
+    const qtyCount=document.getElementById("qtyCount");
+    const minusBtn=document.getElementById("minusBtn");
+    const plusBtn=document.getElementById("plusBtn");
+    const modalAddToCartBtn=document.getElementById("modalAddToCart");
+    let currentModalItem=null;
+    let currentModalSize="";
+
+    // ---------- PRODUCT DATA ----------
+    const products=[
+    {category:"female", sub:"dress", name:"Summer Maxi Dress", price:"₱100 / day", img:"https://i.pinimg.com/1200x/6f/d8/c0/6fd8c0b147c01425ad4a0fec0f72b76e.jpg", description:"Light and airy maxi dress.", sizes:["S","M","L"]},
+    {category:"female", sub:"top", name:"Long Sleeve Crop Top", price:"₱120 / day", img:"https://i.pinimg.com/1200x/fd/97/af/fd97afdc3d5e10e94e03d606f15b25e1.jpg", description:"Trendy long sleeve crop top.", sizes:["XS","S","M"]},
+    {category:"female", sub:"shoes", name:"Heel Short Boots", price:"₱90 / day", img:"https://i.pinimg.com/1200x/62/a7/90/62a79095f1063291e63a45d0821521e0.jpg", description:"Comfortable short boots with heels.", sizes:["6","7","8"]},
+    {category:"male", sub:"top", name:"Mesh Sports Jersey", price:"₱150 / day", img:"https://i.pinimg.com/1200x/78/9d/38/789d38c1fa36c3a80ad3ccedab437c85.jpg", description:"Lightweight sports jersey.", sizes:["M","L","XL"]},
+    {category:"male", sub:"pants", name:"Upcycled Denim Pants", price:"₱170 / day", img:"https://i.pinimg.com/736x/17/89/6a/17896aea29ea959b372bff61b1d15d97.jpg", description:"Stylish denim pants.", sizes:["30","32","34"]},
+    {category:"kids", sub:"top", name:"Halter Romper", price:"₱60 / day", img:"https://i.pinimg.com/736x/1d/04/4e/1d044ea554e101a62fcba0b5c44e8613.jpg", description:"Cute romper for kids.", sizes:["S","M"]},
+    {category:"kids", sub:"shoes", name:"Children Shoes Pu Flower", price:"₱50 / day", img:"https://i.pinimg.com/1200x/6c/33/e6/6c33e6ecec0fe598b00d6276950cbd95.jpg", description:"Comfortable kids shoes.", sizes:["6","7","8"]}
+    ];
+
+    const subcategoriesMap={
+    all:["dress","top","pants","shorts","shoes","accessories"],
+    female:["dress","top","pants","shorts","shoes","accessories"],
+    male:["top","pants", "shorts", "shoes","accessories"],
+    kids:["dress","top","pants","shorts","shoes","accessories"]
+    };
+
+    // ---------- RENDER FUNCTIONS ----------
+    function renderProducts(list){
+    productGrid.innerHTML="";
+    list.forEach(item=>{
+        let card=document.createElement("div"); card.className="product-card";
+        card.innerHTML=`<img src="${item.img}" alt="${item.name}"><div class="product-desc">${item.name}</div><div class="product-description">${item.description}</div>
+        <div class="product-sizes">Sizes: <div class="size-selector">${item.sizes.map(s=>`<button>${s}</button>`).join("")}</div></div>
+        <div class="price-icons-row"><div class="product-price">${item.price}</div>
+        <div class="icons-row">
+        <svg class="wishlist-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41 1.01 4.5 2.09C13.09 4.01 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+        <svg class="cart-btn" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M7 18c-1.1 0-1.99.9-1.99 2S5.9 22 7 22s2-.9 2-2-.9-2-2-2zM1 2h2l3.6 7.59-1.35 2.44C4.52 12.37 5.48 14 7 14h12v-2H7.42c-.14 0-.25-.11-.25-.25l.03-.12L8.1 11h7.45c.75 0 1.41-.41 1.75-1.03l3.58-6.49-1.96-.63L16.89 9H7.21L6.27 7H1z"/></svg>
+        </div></div>`;
+        productGrid.appendChild(card);
+
+        let sizeButtons=card.querySelectorAll(".size-selector button");
+        let selectedSize=sizeButtons[0].textContent;
+        sizeButtons.forEach(btn=>btn.addEventListener("click", e=>{e.stopPropagation(); sizeButtons.forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); selectedSize=btn.textContent;}));
+
+        card.querySelector(".wishlist-btn").addEventListener("click", e=>{e.stopPropagation(); if(!wishlist.includes(item)) wishlist.push(item); renderWishlist(); alert(item.name+" added to wishlist");});
+        card.querySelector(".cart-btn").addEventListener("click", e=>{e.stopPropagation(); addToCart(item, selectedSize,1);});
+        card.addEventListener("click", ()=>{openModal(item);});
+    });
+    }
+
+    function openModal(item){
+    currentModalItem=item;
+    modalImg.src=item.img; modalName.textContent=item.name; modalPrice.textContent=item.price; modalDescription.textContent=item.description;
+    modalSizes.innerHTML=item.sizes.map(s=>`<button>${s}</button>`).join("");
+    currentModalSize=item.sizes[0];
+    modalSizes.querySelectorAll("button").forEach(btn=>{btn.addEventListener("click", ()=>{modalSizes.querySelectorAll("button").forEach(b=>b.classList.remove("selected")); btn.classList.add("selected"); currentModalSize=btn.textContent;});});
+    qtyCount.textContent=1; modal.classList.add("active");
+    }
+
+    document.querySelector(".close-modal").addEventListener("click", ()=>modal.classList.remove("active"));
+    plusBtn.addEventListener("click", ()=>qtyCount.textContent=Number(qtyCount.textContent)+1);
+    minusBtn.addEventListener("click", ()=>{if(qtyCount.textContent>1) qtyCount.textContent--});
+    modalAddToCartBtn.addEventListener("click", ()=>{addToCart(currentModalItem,currentModalSize,Number(qtyCount.textContent)); modal.classList.remove("active");});
+
+    function addToCart(item,size,qty){
+    let existing=cart.find(i=>i.item===item && i.size===size);
+    if(existing) existing.qty+=qty; else cart.push({item,size,qty});
+    renderCart();
+    }
+
+    function renderWishlist(){
+    wishlistItemsContainer.innerHTML="";
+    wishlist.forEach(item=>{
+        const div=document.createElement("div"); div.className="wishlist-card";
+        div.innerHTML=`<img src="${item.img}" alt="${item.name}"><div class="item-name">${item.name}</div><div class="item-price">${item.price}</div><button class="remove-btn">Remove</button>`;
+        div.querySelector(".remove-btn").addEventListener("click", ()=>{wishlist=wishlist.filter(i=>i!==item); renderWishlist();});
+        wishlistItemsContainer.appendChild(div);
+    });
+    }
+
+    function renderCart() {
+    cartItemsContainer.innerHTML = "";
+    cart.forEach(entry => {
+        const div = document.createElement("div");
+        div.className = "cart-card";
+        div.innerHTML = `
+            <img src="${entry.item.img}" alt="${entry.item.name}">
+            <div class="cart-card-details">
+                <div class="item-name">${entry.item.name}</div>
+                <div class="item-price">${entry.item.price}</div>
+                <div class="cart-card-qty">
+                    <button class="qty-minus">-</button>
+                    <span>${entry.qty}</span>
+                    <button class="qty-plus">+</button>
+                    <span>Size: ${entry.size}</span>
+                </div>
+            </div>
+            <button class="remove-btn">Remove</button>
+        `;
+
+        div.querySelector(".qty-minus").addEventListener("click", () => {
+            if (entry.qty > 1) entry.qty--;
+            renderCart();
+        });
+        div.querySelector(".qty-plus").addEventListener("click", () => {
+            entry.qty++;
+            renderCart();
+        });
+
+        div.querySelector(".remove-btn").addEventListener("click", () => {
+            cart = cart.filter(i => i !== entry);
+            renderCart();
+        });
+
+        cartItemsContainer.appendChild(div);
+    });
+}
+
+    // ---------------- CHECKOUT SYSTEM ----------------
+
+function updateCheckoutSummary() {
+    const checkoutBox = document.getElementById("checkoutSummary");
+    const subtotalSpan = document.getElementById("checkoutSubtotal");
+    const totalSpan = document.getElementById("checkoutTotal");
+    const deliverySelect = document.getElementById("deliveryOption");
+
+    if (cart.length === 0) {
+        checkoutBox.style.display = "none";
+        return;
+    }
+
+    checkoutBox.style.display = "block";
+
+    let subtotal = 0;
+    cart.forEach(c => {
+        let priceNum = Number(c.item.price.replace(/₱|\/ day/g, "").trim());
+        subtotal += priceNum * c.qty;
+    });
+
+    let deliveryFee = deliverySelect.value === "delivery" ? 50 : 0;
+    let total = subtotal + deliveryFee;
+
+    // APPLY VOUCHER DISCOUNT
+if (appliedVoucher) {
+    if (appliedVoucher.type === "percent") {
+        total = total - (total * (appliedVoucher.value / 100));
+    } else if (appliedVoucher.type === "fixed") {
+        total = total - appliedVoucher.value;
+    }
+
+    if (total < 0) total = 0;
+}
+
+
+    subtotalSpan.textContent = "₱" + subtotal;
+    totalSpan.textContent = "₱" + total;
+}
+
+let appliedVoucher = null;
+
+const vouchers = {
+    "NEWUSER20": { type: "percent", value: 20 },
+    "RENT150": { type: "fixed", value: 150 },
+    "GLAM10": { type: "percent", value: 10 }
+};
+
+document.getElementById("applyVoucherBtn").addEventListener("click", () => {
+    const code = document.getElementById("voucherInput").value.trim().toUpperCase();
+    const message = document.getElementById("voucherMessage");
+
+    if (!vouchers[code]) {
+        appliedVoucher = null;
+        message.textContent = "Invalid voucher code.";
+        updateCheckoutSummary();
+        return;
+    }
+
+    appliedVoucher = vouchers[code];
+    message.textContent = `Voucher applied: ${code}`;
+    updateCheckoutSummary();
+});
+
+
+document.getElementById("deliveryOption").addEventListener("change", updateCheckoutSummary);
+
+// Override renderCart to update totals
+const oldRenderCart = renderCart;
+renderCart = function () {
+    oldRenderCart();
+    updateCheckoutSummary();
+};
+
+// ---------------- CHECKOUT MODAL LOGIC ----------------
+
+const checkoutBtn = document.getElementById("checkoutBtn");
+const checkoutModal = document.getElementById("checkoutModal");
+const cancelCheckout = document.getElementById("cancelCheckout");
+const confirmCheckout = document.getElementById("confirmCheckout");
+const checkoutText = document.getElementById("checkoutSummaryText");
+
+checkoutBtn.addEventListener("click", () => {
+    let payment = document.getElementById("paymentOption").value;
+    let delivery = document.getElementById("deliveryOption").value;
+    let total = document.getElementById("checkoutTotal").textContent;
+
+    checkoutText.innerHTML = `
+        <strong>Payment:</strong> ${payment.toUpperCase()}<br>
+        <strong>Delivery:</strong> ${delivery.toUpperCase()}<br><br>
+        <strong>Total:</strong> ${total}
+    `;
+
+    checkoutModal.style.display = "flex";
+});
+
+cancelCheckout.addEventListener("click", () => {
+    checkoutModal.style.display = "none";
+});
+
+confirmCheckout.addEventListener("click", () => {
+    checkoutModal.style.display = "none";
+
+    // --- SAVE ORDER TO ORDER HISTORY ---
+    const delivery = document.getElementById("deliveryOption").value;
+    const payment = document.getElementById("paymentOption").value;
+    const total = document.getElementById("checkoutTotal").textContent;
+
+    const newOrder = {
+    id: "ORD-" + Date.now(),
+    date: new Date().toLocaleString(),
+    items: cart.map(c => ({
+        name: c.item.name,
+        img: c.item.img,
+        size: c.size,
+        qty: c.qty,
+        price: c.item.price
+    })),
+    payment: payment,
+    delivery: delivery,
+    total: total,
+    status: "Pending"   
+};
+
+    function renderOrderHistory() {
+    const orderContainer = document.querySelector("#acctOrders div");
+
+    if (!orderHistory.length) {
+        orderContainer.innerHTML = `<p>No orders yet.</p>`;
+        return;
+    }
+
+    orderContainer.innerHTML = orderHistory.map(order => `
+        <div style="
+            background:#fff; padding:15px; border-radius:10px;
+            margin-bottom:15px; box-shadow:0 4px 10px rgba(0,0,0,0.05);
+        ">
+            <h4 style="color:#6b21a8; margin-bottom:8px;">Order: ${order.id}</h4>
+            <p><strong>Date:</strong> ${order.date}</p>
+            <p><strong>Payment:</strong> ${order.payment.toUpperCase()}</p>
+            <p><strong>Delivery:</strong> ${order.delivery.toUpperCase()}</p>
+
+            <p style="margin-top:5px;">
+                <strong>Status:</strong> 
+                <span style="
+                    padding:4px 10px; 
+                    border-radius:6px; 
+                    color:white; 
+                    background:${order.status === "Delivered" ? "#4caf50" : "#ff9800"};
+                    font-weight:600;
+                ">
+                    ${order.status}
+                </span>
+            </p>
+
+            <div style="margin-top:10px;">
+                ${order.items.map(i => `
+                    <div style="display:flex; gap:10px; margin-bottom:10px;">
+                        <img src="${i.img}" style="width:70px;height:70px;border-radius:8px;object-fit:cover;">
+                        <div>
+                            <div><strong>${i.name}</strong></div>
+                            <div>Size: ${i.size}</div>
+                            <div>Qty: ${i.qty}</div>
+                            <div>Price: ${i.price}</div>
+                        </div>
+                    </div>
+                `).join("")}
+            </div>
+
+            <p style="margin-top:10px;font-weight:600;">
+                Total: <span style="color:#6b21a8">${order.total}</span>
+            </p>
+
+            <!-- Change Status Button -->
+            <button onclick="toggleOrderStatus('${order.id}')" style="
+                margin-top:12px;
+                padding:8px 14px;
+                border:none;
+                border-radius:6px;
+                cursor:pointer;
+                background:#6b21a8;
+                color:white;
+                font-weight:600;
+            ">
+                Mark as ${order.status === "Pending" ? "Delivered" : "Pending"}
+            </button>
+        </div>
+    `).join("");
+}
+
+
+    orderHistory.push(newOrder);
+    renderOrderHistory();
+
+    alert("Order placed successfully!");
+
+    cart = [];
+    renderCart();
+    updateCheckoutSummary();
+});
+
+function toggleOrderStatus(orderId) {
+    const order = orderHistory.find(o => o.id === orderId);
+    if (!order) return;
+
+    order.status = order.status === "Pending" ? "Delivered" : "Pending";
+    renderOrderHistory();
+}
+
+    // ---------- SUBCATEGORY & FILTER ----------
+    function renderSubcategories(group){
+    subcatContainer.innerHTML="";
+    subcategoriesMap[group].forEach(sub=>{
+        let btn=document.createElement("button"); btn.textContent=sub.charAt(0).toUpperCase()+sub.slice(1); btn.dataset.sub=sub;
+        btn.addEventListener("click", ()=>{document.querySelectorAll(".subcategories button").forEach(b=>b.classList.remove("active")); btn.classList.add("active"); currentSub=sub; filterProducts();});
+        subcatContainer.appendChild(btn);
+    });
+    }
+
+    function filterProducts(){
+    let list=[...products];
+    if(currentCategory!=="all") list=list.filter(p=>p.category===currentCategory);
+    if(currentSub) list=list.filter(p=>p.sub===currentSub);
+    if(currentSearch) list=list.filter(p=>p.name.toLowerCase().includes(currentSearch));
+    renderProducts(list);
+    }
+
+    document.querySelectorAll(".filter-list button").forEach(btn=>{
+    btn.addEventListener("click", ()=>{
+        document.querySelectorAll(".filter-list button").forEach(b=>b.classList.remove("active"));
+        btn.classList.add("active"); currentCategory=btn.dataset.filter; currentSub=null;
+        renderSubcategories(currentCategory); filterProducts();
+    });
+    });
+
+    // ---------- SEARCH ----------
+    searchInput.addEventListener("input", ()=>{currentSearch=searchInput.value.toLowerCase().trim(); filterProducts();});
+    searchBtn.addEventListener("click", ()=>{currentSearch=searchInput.value.toLowerCase().trim(); filterProducts();});
+
+    // ---------- NAV (Home / Wishlist / Cart / Help) ----------
+    document.getElementById("wishlistIcon").addEventListener("click",()=>{
+    showSection('wishlistPage');
+    });
+    document.getElementById("cartIcon").addEventListener("click",()=>{
+    showSection('cartPage');
+    });
+    document.getElementById("navHome").addEventListener("click",()=>{
+    showSection('home');
+    });
+    document.getElementById("logoBtn").addEventListener("click",()=>{ showSection('home'); });
+    document.getElementById("navHelp").addEventListener("click", ()=>{ showSection('helpPage'); showHelpContent('contact'); }); // Default to contact on help load
+    document.getElementById("profileIcon").addEventListener("click", ()=>{ showSection('accountSettingsPage'); openAccountTab('acctProfile'); });
+
+    // showSection extended to handle accountSettingsPage
+    function showSection(id){
+    // reset nav active state
+    document.querySelectorAll("nav ul li").forEach(li=>li.classList.remove("active"));
+    document.getElementById("navHome").classList.toggle("active", id==='home');
+    document.getElementById("navHelp").classList.toggle("active", id==='helpPage');
+
+    // show/hide main sections
+    if(id==='home'){
+        sliderElem.style.display="block";
+        dotsContainer.style.display="block";
+        filtersElem.style.display="block";
+        productGrid.style.display="grid";
+        wishlistPage.classList.remove("active");
+        cartPage.classList.remove("active");
+        helpPage.classList.remove("active");
+        if(accountSettingsPage) accountSettingsPage.style.display="none";
+    } else if(id==='wishlistPage'){
+        sliderElem.style.display="none";
+        dotsContainer.style.display="none";
+        filtersElem.style.display="none";
+        productGrid.style.display="none";
+        wishlistPage.classList.add("active");
+        cartPage.classList.remove("active");
+        helpPage.classList.remove("active");
+        if(accountSettingsPage) accountSettingsPage.style.display="none";
+    } else if(id==='cartPage'){
+        sliderElem.style.display="none";
+        dotsContainer.style.display="none";
+        filtersElem.style.display="none";
+        productGrid.style.display="none";
+        cartPage.classList.add("active");
+        wishlistPage.classList.remove("active");
+        helpPage.classList.remove("active");
+        if(accountSettingsPage) accountSettingsPage.style.display="none";
+    } else if(id==='helpPage'){
+        sliderElem.style.display="none";
+        dotsContainer.style.display="none";
+        filtersElem.style.display="none";
+        productGrid.style.display="none";
+        helpPage.classList.add("active");
+        wishlistPage.classList.remove("active");
+        cartPage.classList.remove("active");
+        if(accountSettingsPage) accountSettingsPage.style.display="none";
+    } else if(id==='accountSettingsPage'){
+        // Hide other main sections
+        sliderElem.style.display="none";
+        dotsContainer.style.display="none";
+        filtersElem.style.display="none";
+        productGrid.style.display="none";
+        wishlistPage.classList.remove("active");
+        cartPage.classList.remove("active");
+        helpPage.classList.remove("active");
+        if(accountSettingsPage) accountSettingsPage.style.display="block";
+    }
+    }
+
+    // ---------- HELP ----------
+    const helpNavButtons = document.querySelectorAll('.help-nav-list button');
+    const helpContentSections = document.querySelectorAll('.help-content-section');
+
+    function showHelpContent(targetId) {
+        helpNavButtons.forEach(btn => btn.classList.remove('active'));
+        helpContentSections.forEach(section => section.classList.remove('active'));
+
+        const activeBtn = document.querySelector(`.help-nav-list button[data-target="${targetId}"]`);
+        const activeContent = document.getElementById(`${targetId}Content`);
+
+        if (activeBtn) activeBtn.classList.add('active');
+        if (activeContent) activeContent.classList.add('active');
+    }
+
+    helpNavButtons.forEach(button => {
+        button.addEventListener('click', (e) => {
+            showHelpContent(e.target.dataset.target);
+        });
+    });
+
+    function handleContactForm(e){
+    e.preventDefault();
+    const EMAIL_ADDRESS="lavoguerentals@example.com"; 
+    const name=document.getElementById("cfName").value.trim();
+    const email=document.getElementById("cfEmail").value.trim();
+    const subject=document.getElementById("cfSubject").value.trim();
+    const message=document.getElementById("cfMessage").value.trim();
+    const body = encodeURIComponent(`Name: ${name}\nEmail: ${email}\n\n${message}`);
+    const mailto = `mailto:${EMAIL_ADDRESS}?subject=${encodeURIComponent(subject)}&body=${body}`;
+    window.location.href = mailto;
+    return false;
+    }
+
+    // ---------- FAQ accordion ----------
+    document.addEventListener("click", (e)=>{
+    if(e.target && e.target.classList.contains("faq-q")){
+        const item = e.target;
+        const answer = item.nextElementSibling;
+        const sym = item.querySelector("span");
+        if(answer.style.display === "block"){ answer.style.display="none"; sym.textContent="+"; }
+        else { answer.style.display="block"; sym.textContent="-"; }
+    } else if(e.target && e.target.parentElement && e.target.parentElement.classList.contains("faq-q")){
+        const item = e.target.parentElement;
+        const answer = item.nextElementSibling;
+        const sym = item.querySelector("span");
+        if(answer.style.display === "block"){ answer.style.display="none"; sym.textContent="+"; }
+        else { answer.style.display="block"; sym.textContent="-"; }
+    }
+    });
+
+    // ---------- SLIDER  ----------
+    const slidesContainer=document.querySelector(".slides");
+    const slides=document.querySelectorAll(".slides img");
+    let currentIndex=0;
+
+    slides.forEach((s,i)=>{
+    const dot=document.createElement("span");
+    dot.dataset.index=i;
+    dot.addEventListener("click", ()=>{ goToSlide(i); });
+    dotsContainer.appendChild(dot);
+    });
+    function updateDots(){ document.querySelectorAll(".slider-dots span").forEach((d,i)=>d.classList.toggle("active", i===currentIndex)); }
+    function goToSlide(i){
+    currentIndex = i % slides.length;
+    slidesContainer.style.transform = `translateX(-${currentIndex * 100}%)`;
+    updateDots();
+    }
+    function nextSlide(){ currentIndex = (currentIndex+1) % slides.length; goToSlide(currentIndex); }
+    let sliderInterval = setInterval(nextSlide, 4000);
+    goToSlide(0);
+
+    // ---------- ACCOUNT SETTINGS FUNCTIONALITY ----------
+
+    function openAccountTab(tabName){
+        // hide all acct-content
+        document.querySelectorAll(".acct-content").forEach(c=>c.style.display="none");
+        // remove active class from all acct-btns
+        document.querySelectorAll(".acct-btn").forEach(b=>b.classList.remove("active-acct-btn"));
+        // show the requested tab
+        const el = document.getElementById(tabName);
+        if(el) el.style.display="block";
+        // highlight button
+        const btn = document.querySelector(`.acct-btn[data-tab="${tabName}"]`);
+        if(btn) btn.classList.add("active-acct-btn");
+    }
+
+    // Save profile changes and update display
+    function saveProfile(){
+        const name = document.getElementById("edit-name").value.trim();
+        const email = document.getElementById("edit-email").value.trim();
+        const gender = document.getElementById("edit-gender").value;
+        const bdayRaw = document.getElementById("edit-bday").value;
+
+        // format birthday to MM/DD/YYYY 
+        let displayBday = "MM/DD/YYYY";
+        if(bdayRaw){
+            const d = new Date(bdayRaw);
+            if(!isNaN(d)){
+                const mm = String(d.getMonth()+1).padStart(2,'0');
+                const dd = String(d.getDate()).padStart(2,'0');
+                const yyyy = d.getFullYear();
+                displayBday = `${mm}/${dd}/${yyyy}`;
+            }
+        }
+
+        if(name) document.getElementById("display-name").innerText = name;
+        if(email) document.getElementById("display-email").innerText = email;
+        if(gender) document.getElementById("display-gender").innerText = gender;
+        document.getElementById("display-bday").innerText = displayBday;
+        document.getElementById("card-name").innerText = name.toUpperCase();
+
+        alert("Profile updated successfully!");
+    }
+
+    // Simple change password placeholder
+    function changePassword(){
+        const cur = document.getElementById("cur-pass").value;
+        const neu = document.getElementById("new-pass").value;
+        const conf = document.getElementById("confirm-pass").value;
+        if(!cur || !neu || !conf){ alert("Please fill all fields."); return; }
+        if(neu !== conf){ alert("New passwords do not match."); return; }
+        // placeholder action
+        alert("Password updated (placeholder).");
+        document.getElementById("cur-pass").value = "";
+        document.getElementById("new-pass").value = "";
+        document.getElementById("confirm-pass").value = "";
+    }
+
+    // ---------- ADDRESS BOOK FUNCTIONALITY ----------
+
+function resetAddressForm() {
+    document.getElementById('addr-label').value = '';
+    document.getElementById('addr-street').value = '';
+    document.getElementById('addr-city').value = '';
+    document.getElementById('addr-province').value = '';
+    document.getElementById('addr-zip').value = '';
+    document.getElementById('addr-phone').value = '';
+    document.getElementById('addr-edit-index').value = -1;
+}
+
+// Save or update address
+function saveAddress() {
+    const label = document.getElementById('addr-label').value.trim();
+    const street = document.getElementById('addr-street').value.trim();
+    const city = document.getElementById('addr-city').value.trim();
+    const province = document.getElementById('addr-province').value.trim();
+    const zip = document.getElementById('addr-zip').value.trim();
+    const phone = document.getElementById('addr-phone').value.trim();
+
+    if (!label || !street || !city) {
+        alert("Please complete Label, Street and City.");
+        return;
+    }
+
+    const editIndex = Number(document.getElementById('addr-edit-index').value);
+
+    const newAddress = { label, street, city, province, zip, phone };
+
+    if (!userData.addresses) userData.addresses = [];
+
+    if (editIndex >= 0) {
+        // Update existing address
+        userData.addresses[editIndex] = newAddress;
+    } else {
+       
+     userData.addresses.push(newAddress);
+    }
+
+    saveUserData();
+    resetAddressForm();
+    renderAddresses();
+}
+
+// Display saved addresses
+function renderAddresses() {
+    const container = document.getElementById('addressList');
+    container.innerHTML = '';
+
+    if (!userData.addresses || userData.addresses.length === 0) {
+        container.innerHTML = '<p>No addresses saved.</p>';
+        return;
+    }
+
+    userData.addresses.forEach((addr, index) => {
+        const card = document.createElement('div');
+        card.style.border = '1px solid #ddd';
+        card.style.borderRadius = '10px';
+        card.style.padding = '12px';
+        card.style.marginBottom = '10px';
+        card.style.background = '#fff';
+        card.style.boxShadow = '0 4px 10px rgba(0,0,0,0.05)';
+
+        card.innerHTML = `
+            <strong>${addr.label}</strong>
+            <div style="margin-top:6px; color:#555;">
+                ${addr.street}, ${addr.city}${addr.province ? ", " + addr.province : ""}, ${addr.zip}
+                <br>Phone: ${addr.phone || "—"}
+            </div>
+
+            <div style="margin-top:10px; display:flex; gap:10px;">
+                <button style="background:#6b21a8;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer"
+                    onclick="editAddress(${index})">Edit</button>
+
+                <button style="background:#e63946;color:#fff;border:none;padding:6px 12px;border-radius:6px;cursor:pointer"
+                    onclick="deleteAddress(${index})">Delete</button>
+            </div>
+        `;
+
+        container.appendChild(card);
+    });
+}
+
+// Load address into form for editing
+function editAddress(index) {
+    const addr = userData.addresses[index];
+    if (!addr) return;
+
+    document.getElementById('addr-label').value = addr.label;
+    document.getElementById('addr-street').value = addr.street;
+    document.getElementById('addr-city').value = addr.city;
+    document.getElementById('addr-province').value = addr.province;
+    document.getElementById('addr-zip').value = addr.zip;
+    document.getElementById('addr-phone').value = addr.phone;
+    document.getElementById('addr-edit-index').value = index;
+
+    openAccountTab('acctAddress'); 
+}
+
+// Delete address
+function deleteAddress(index) {
+    if (!confirm("Are you sure you want to delete this address?")) return;
+
+    userData.addresses.splice(index, 1);
+    saveUserData();
+    renderAddresses();
+}
+
+    // PRIVACY AND NOTIFICATION
+    function savePrivacySettings(){
+    const email = document.getElementById("notif-email").value;
+    const sms = document.getElementById("notif-sms").value;
+    const visibility = document.getElementById("privacy-visibility").value;
+    alert("Privacy & Notification settings updated!\nEmail: " + email + "\nSMS: " + sms + "\nVisibility: " + visibility);
+    }
+
+    // PAYMENT METHODS
+        let savedPayments = [];
+
+    function renderPaymentList() {
+        const paymentList = document.getElementById("paymentList");
+        paymentList.innerHTML = "";
+
+        if (savedPayments.length === 0) {
+            paymentList.innerHTML = "<p style='color:#777'>No payment methods added.</p>";
+            return;
+        }
+
+        savedPayments.forEach((p, index) => {
+            const div = document.createElement("div");
+            div.style.cssText = "background:#f1f1f1;padding:12px;border-radius:8px;margin-bottom:10px;";
+
+            if (p.type === "card") {
+                div.innerHTML = `
+                    <strong>Card:</strong> ${p.cardName}<br>
+                    • **** **** **** ${p.cardNumber.slice(-4)} 
+                    <button style="float:right;background:#e63946;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer"
+                        onclick="removePayment(${index})">Remove</button>
+                `;
+            } else {
+                div.innerHTML = `
+                    <strong>E-Wallet:</strong> ${p.walletType}<br>
+                    • ${p.walletName} — ${p.walletNumber}
+                    <button style="float:right;background:#e63946;color:white;border:none;padding:5px 10px;border-radius:6px;cursor:pointer"
+                        onclick="removePayment(${index})">Remove</button>
+                `;
+            }
+
+            paymentList.appendChild(div);
+        });
+    }
+
+    function removePayment(i) {
+        savedPayments.splice(i, 1);
+        renderPaymentList();
+    }
+
+    document.getElementById("payType").addEventListener("change", function () {
+        const type = this.value;
+        document.getElementById("cardForm").style.display = type === "card" ? "block" : "none";
+        document.getElementById("ewalletForm").style.display = type === "ewallet" ? "block" : "none";
+    });
+
+    function addPaymentMethod() {
+        const type = document.getElementById("payType").value;
+
+        if (type === "card") {
+            const cardName = document.getElementById("cardName").value.trim();
+            const cardNumber = document.getElementById("cardNumber").value.trim();
+            const expiry = document.getElementById("cardExpiry").value;
+            const cvv = document.getElementById("cardCVV").value;
+
+            if (!cardName || !cardNumber || !expiry || !cvv) {
+                alert("Please complete all card fields.");
+                return;
+            }
+
+            savedPayments.push({
+                type: "card",
+                cardName,
+                cardNumber,
+                expiry
+            });
+
+        } else {
+            const walletType = document.getElementById("walletType").value;
+            const walletName = document.getElementById("walletName").value.trim();
+            const walletNumber = document.getElementById("walletNumber").value.trim();
+
+            if (!walletName || !walletNumber) {
+                alert("Please fill all e-wallet fields.");
+                return;
+            }
+
+            savedPayments.push({
+                type: "ewallet",
+                walletType,
+                walletName,
+                walletNumber
+            });
+        }
+
+        alert("Payment method added!");
+        renderPaymentList();
+    }
+
+    // COUPONS AND REWARDS
+    let rewardPoints = 250;
+
+        // Apply coupon logic
+        function applyCoupon() {
+        const input = document.getElementById('couponInput').value.trim().toUpperCase();
+        const msg = document.getElementById('couponMessage');
+
+
+        if (!input) {
+        msg.textContent = "Please enter a coupon code.";
+        msg.style.color = "red";
+        return;
+        }
+
+
+        const validCoupons = {
+        "NEWUSER20": "20% OFF applied!",
+        "RENT150": "₱150 discount applied!",
+        "GLAM10": "10% OFF on dresses applied!"
+        };
+
+
+        if (validCoupons[input]) {
+        msg.textContent = validCoupons[input];
+        msg.style.color = "green";
+        } else {
+        msg.textContent = "Invalid coupon code.";
+        msg.style.color = "red";
+        }
+        }
+
+    // MEMBERSHIP
+        let membership = {
+        tier: "Gold",
+        points: 2400,
+        nextTier: "Platinum",
+        nextTierRequirement: 3000,
+        renewalDate: "2025-12-01"
+    };
+
+    function loadMembership() {
+        document.getElementById("memberTier").innerText = membership.tier;
+        document.getElementById("memberPoints").innerText = membership.points;
+        document.getElementById("nextTier").innerText = membership.nextTier;
+
+        let progress = (membership.points / membership.nextTierRequirement) * 100;
+        document.getElementById("progressBar").style.width = progress + "%";
+
+        const pointsLeft = membership.nextTierRequirement - membership.points;
+        document.getElementById("pointsNeeded").innerText =
+            pointsLeft + " points to reach " + membership.nextTier;
+
+        document.getElementById("renewDate").innerText = membership.renewalDate;
+    }
+
+    // Load membership data when tab opens
+    document.querySelector(`.acct-btn[data-tab="acctMembership"]`)
+        .addEventListener("click", loadMembership);
+
+    // ---------- INITIAL RENDER ----------
+    renderSubcategories(currentCategory);
+    filterProducts();
+
+    document.getElementById("loginBtn").addEventListener("click", () => {
+    // ----- SWITCH LOGIN <-> REGISTER -----
+const loginBox = document.querySelector("#loginOverlay > div:nth-child(2) > div");
+const registerBox = document.getElementById("registerForm");
+const createAccLink = document.getElementById("createAccountLink");
+const cancelRegister = document.getElementById("cancelRegister");
+
+// Open Register
+createAccLink.addEventListener("click", (e) => {
+    e.preventDefault();
+    loginBox.style.display = "none";
+    registerBox.style.display = "block";
+});
+
+// Go back to Login
+cancelRegister.addEventListener("click", () => {
+    registerBox.style.display = "none";
+    loginBox.style.display = "block";
+});
+
+    const overlay = document.getElementById("loginOverlay");
+
+    overlay.style.animation = "fadeOut 0.6s forwards";
+
+    setTimeout(() => {
+        overlay.style.display = "none";
+    }, 600);
+}); 
+    
+
+    </script>
+    </body>
+    </html>
+
