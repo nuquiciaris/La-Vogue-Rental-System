@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+    <!DOCTYPE html>
     <html lang="en">
     <head>
     <meta charset="UTF-8" />
@@ -453,72 +453,6 @@
             ">
                 Welcome Back
             </h2>
-            <!-- REGISTER FORM (Hidden at first) -->
-<div id="registerForm" style="
-    display:none;
-    background: white;
-    padding: 50px;
-    width: 380px;
-    border-radius: 20px;
-    box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-    animation: fadeIn 0.6s ease;
-">
-
-    <h2 style="
-        font-family: 'Brush Script MT', cursive;
-        font-size: 40px;
-        text-align: center;
-        margin-bottom: 30px;
-        color: #7F8CAA;
-    ">Create Account</h2>
-
-    <label>Name</label>
-    <input type="text" id="regName" placeholder="Full Name" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-
-    <label>Email</label>
-    <input type="email" id="regEmail" placeholder="Enter email" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-
-    <label>Password</label>
-    <input type="password" id="regPass" placeholder="Create password" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-
-    <label>Confirm Password</label>
-    <input type="password" id="regConfirm" placeholder="Confirm password" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-
-    <label>Gender</label>
-    <select id="regGender" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-        <option>Female</option>
-        <option>Male</option>
-        <option>Other</option>
-    </select>
-
-    <label>Birthday</label>
-    <input type="date" id="regBday" style="width:100%;padding:14px;margin:10px 0 25px;border:2px solid #7F8CAA;border-radius:10px;">
-
-    <button id="registerBtn" style="
-        width:100%;
-        padding:15px;
-        border-radius:30px;
-        border:none;
-        font-size:18px;
-        background:#7F8CAA;
-        color:white;
-        cursor:pointer;
-        margin-top:10px;
-    ">CREATE ACCOUNT</button>
-
-    <button id="cancelRegister" style="
-        margin-top:15px;
-        width:100%;
-        padding:12px;
-        background:#bbb;
-        border:none;
-        border-radius:10px;
-        cursor:pointer;
-        font-weight:600;
-    ">Back to Login</button>
-
-</div>
-
 
             <label style="font-size: 16px; font-weight: 600; color: #333;">Email</label>
             <input type="text" id="loginEmail" placeholder="Enter your email" style="
@@ -1146,7 +1080,6 @@
     </div>
 
     <footer>© 2025 La Vogue Rentals | Fashion that feels good</footer>
-    
 
     <script>
     const productGrid=document.querySelector(".product-grid");
@@ -2004,25 +1937,6 @@ function deleteAddress(index) {
     filterProducts();
 
     document.getElementById("loginBtn").addEventListener("click", () => {
-    // ----- SWITCH LOGIN <-> REGISTER -----
-const loginBox = document.querySelector("#loginOverlay > div:nth-child(2) > div");
-const registerBox = document.getElementById("registerForm");
-const createAccLink = document.getElementById("createAccountLink");
-const cancelRegister = document.getElementById("cancelRegister");
-
-// Open Register
-createAccLink.addEventListener("click", (e) => {
-    e.preventDefault();
-    loginBox.style.display = "none";
-    registerBox.style.display = "block";
-});
-
-// Go back to Login
-cancelRegister.addEventListener("click", () => {
-    registerBox.style.display = "none";
-    loginBox.style.display = "block";
-});
-
     const overlay = document.getElementById("loginOverlay");
 
     overlay.style.animation = "fadeOut 0.6s forwards";
@@ -2036,4 +1950,5 @@ cancelRegister.addEventListener("click", () => {
     </script>
     </body>
     </html>
+
 
